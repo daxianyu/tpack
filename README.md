@@ -1,0 +1,1 @@
+## a tiny html resources packing tool for learning webpack
