@@ -8,7 +8,8 @@ let options = {
     //     // ignore: './src/pages/home/'
     // }),
     entry: {
-        html1: 'test/src/index.html'
+        html1: 'test/src/index.html',
+        html2: 'test/src/index2.html'
     },
     output: {
         path: 'dist',
