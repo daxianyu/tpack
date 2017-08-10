@@ -1,21 +1,36 @@
-/*globals __dirname, module, require */
 const path = require('path');
-let here = __dirname,
-    root = path.resolve(here, '../'),
-    dist = path.resolve(root, 'dist');
 
-module.exports = {
-    base: {
-        pages: path.resolve(here, '../src/pages/**/*.js')
-    },
-    build: {
-        assetsPublicPath: dist,
-        assetsSubDirectory: __dirname,
-    },
-    dev: {
-        port: 8008
-    },
-    externals: {
-        React: ''
+const Compiler = require('./compiler')
+
+const allResource = {}
+
+function defaultOptions(options){
+    const deOption = {
+        modify: {
+            random: '__random',
+            raw: '__raw'
+        }
     }
-};
+
+    Object.keys(deOption.modify).forEach(mf=>{
+        options[mf] = options[mf] || deOption.modify[mf]
+    })
+
+    return options
+}
+
+function tPack(options, callback){
+    const compiler = new Compiler()
+    compiler.options = defaultOptions(options)
+    compiler.context = options.context? path.resolve(process.cwd(), options.context):process.cwd()
+
+    let htmlFile = options.entry
+    if(Object.prototype.toString.call(htmlFile) === '[object Object]'){
+        compiler.multiEntry(Object.keys(htmlFile).map(htmlName=>compiler.entry(htmlName, htmlFile[htmlName])))
+    } else {
+        compiler.entry('index', htmlFile)
+    }
+    compiler.run(callback)
+}
+
+module.exports = tPack

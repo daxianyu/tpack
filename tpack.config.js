@@ -1,4 +1,4 @@
-const tPack = require('./src/resource_html')
+const tPack = require('./src')
 const find = require('./src/findEntry').find
 
 
